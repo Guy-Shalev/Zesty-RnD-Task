@@ -1,1 +1,7 @@
+General comments
 
+Given more time I would have separated the file reading and writing code to a separated class to handle it, so it can bve reused in both functions.
+Also i would add unit testing.
+
+Do to time constrains and converting the docker access to Java, this part was left unfinished. However, what I would have done is to call the file (and return a log error if not found),
+convert it to an object and get the list of instances for the given region.
