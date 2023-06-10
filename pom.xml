@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.guyshalev</groupId>
 	<artifactId>Zesty-RnD-Task</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>Zesty-RnD-Task</name>
 	<description>Project for Zesty</description>
 	<properties>

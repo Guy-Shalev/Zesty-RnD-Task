@@ -26,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 /**
  * Given more time I would have separated the file reading and writing code to a separated class to handle it,
  * so it can bve reused in both functions
+ * Also i would add unit testing
  */
 @Service
 public class ETL implements IETL {
