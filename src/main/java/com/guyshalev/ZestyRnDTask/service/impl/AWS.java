@@ -1,6 +1,9 @@
 package com.guyshalev.ZestyRnDTask.service.impl;
 
+import com.guyshalev.ZestyRnDTask.service.IAWS;
 import com.guyshalev.ZestyRnDTask.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -15,7 +18,8 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class AWS {
+public class AWS implements IAWS {
+    private static final Logger LOG = LoggerFactory.getLogger(AWS.class);
     public static final String CANNOT_CONNECT_TO_AWS = "Cannot connect to AWS ECS";
     public static final String NO_INSTANCES_FOUND = "No instances where found";
 
@@ -25,6 +29,7 @@ public class AWS {
      * @param regionName - AWS region name
      * @return a list of AWS Instances for a given region
      */
+    @Override
     public List<Instance> getInstances(String regionName) {
         // Set the desired region
         Region region = Region.of(regionName);
@@ -42,14 +47,14 @@ public class AWS {
             // Retrieve the described instances response
             response = ec2Client.describeInstances(request);
         } catch (Exception e) {
-            System.out.println(CANNOT_CONNECT_TO_AWS + region + " Because of: "
+            LOG.error(CANNOT_CONNECT_TO_AWS + region + " Because of: "
                     + e.getMessage() + ", " + Arrays.toString(e.getStackTrace()));
         }
 
         List<Instance> instances = new ArrayList<>();
 
         if (response == null) {
-            System.out.println(NO_INSTANCES_FOUND);
+            LOG.error(NO_INSTANCES_FOUND);
         } else {
             // Extract the list of instances
             instances = response.reservations().stream()
@@ -67,6 +72,7 @@ public class AWS {
      * @param instances -  a list of AWS Instances
      * @return a sorted list
      */
+    @Override
     public List<Instance> sortByLaunchTime(List<Instance> instances) {
         return instances.stream()
                 .sorted(Comparator.comparing(instance -> Utils.formatTime(instance.launchTime())))
